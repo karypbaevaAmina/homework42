@@ -16,6 +16,7 @@ public class EchoServer {
     public static EchoServer bindToPort(int port) {
         return new EchoServer(port);
     }
+
     private final ExecutorService pool =
             Executors.newCachedThreadPool();
 
@@ -25,8 +26,8 @@ public class EchoServer {
         try (var server = new ServerSocket(port)) {
             while (!server.isClosed()) {
                 Socket clientSocket = server.accept();
-
                 pool.submit( () -> Aid.handle(clientSocket));
+
 
                 serverList.add(new ServerSomething(clientSocket));
 
@@ -37,6 +38,8 @@ public class EchoServer {
 
         }
     }
+
+
 
 
 }

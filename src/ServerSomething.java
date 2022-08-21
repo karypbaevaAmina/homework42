@@ -20,28 +20,7 @@ public class ServerSomething extends Thread {
         start();
     }
 
-    @Override
-    public void run(){
-
-        String word;
-        try {
-            while(true){
-                word = in.readLine();
-                System.out.println(word);
-                if(word.equals("stop")) {
-                    break;}
-                    for (ServerSomething vr: EchoServer.serverList){
-                        vr.send(word);
-                    }
-                }
-
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
-    }
-
-
-    private void send(String msg) {
+    void send(String msg) {
         try {
             out.write(msg + "\n");
             out.flush();

@@ -8,25 +8,33 @@ import java.util.Scanner;
 public class Aid {
     private static final Random r = new Random();
 
-    private static final List<String> name = List.of("Sanjar", "Amina", "Aleksei", "Loan", "Kairat", "Andrei", "DSS DSS", "Asem", "Tariel'");
+//    private static final List<String> name = List.of("Sanjar", "Amina", "Aleksei", "Loan", "Kairat", "Andrei", "DSS DSS", "Asem", "Tariel'");
 
-    public static String clientName =name.get(r.nextInt(name.size()));
+//    public static String clientName =name.get(r.nextInt(name.size()));
+
+
+
 
     static void handle(Socket socket){
 
         // логика обработки
-        System.out.printf("Connected client: %s %s%n", clientName);
+        System.out.printf("Connected client:  %s%n", socket);
 // создадим объекты через которые будем читать
 // запросы от клиента и отправлять ответы
 
         try (Scanner reader = getReader(socket);
              PrintWriter writer = getWriter(socket);
              socket) {
-            sendResponse("Hello " + clientName, writer);
 
             while (true) {
                 String message = reader.nextLine();
                 System.out.printf("User write: %s%n", message);
+                sendResponse("Hello " + socket, writer);
+                if(message.equals("stop")) {
+                    break;}
+                for (ServerSomething vr: EchoServer.serverList){
+                        vr.send(message);
+                }
                 if ("Bye".equalsIgnoreCase(message)){
                     System.out.println("Bye bye!%n");
                     return;
@@ -34,8 +42,6 @@ public class Aid {
                 if (isEmptyMsg(message) || isQuitMsg(message)) {
                     break;
                 }
-// отправим ответ
-                sendResponse(message.toUpperCase(), writer);
             }
         } catch (NoSuchElementException ex) {
 
@@ -45,8 +51,9 @@ public class Aid {
         } catch (IOException e) {
             e.printStackTrace();
         }
-        System.out.printf("Client disconnected: %s %s%n", clientName, socket);
+        System.out.printf("Client disconnected:  %s%n", socket);
     }
+
 
     private static PrintWriter getWriter(Socket socket)
             throws IOException { OutputStream stream = socket.getOutputStream();
