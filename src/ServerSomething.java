@@ -1,7 +1,6 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
-import java.util.Random;
+
 
 public class ServerSomething extends Thread {
 
@@ -12,7 +11,7 @@ public class ServerSomething extends Thread {
     private BufferedWriter out;
 
 
-    public ServerSomething(Socket socket) throws IOException{
+    public ServerSomething(Socket socket) throws IOException {
         this.socket = socket;
 
         in = new BufferedReader(new InputStreamReader(socket.getInputStream()));
@@ -20,9 +19,9 @@ public class ServerSomething extends Thread {
         start();
     }
 
-    void send(String msg) {
+    void send(String msg, String name ) {
         try {
-            out.write(msg + "\n");
+            out.write(name +": " + msg + "\n");
             out.flush();
         } catch (IOException ignored) {}
     }

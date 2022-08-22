@@ -1,24 +1,15 @@
 import java.io.*;
 import java.net.Socket;
-import java.util.List;
-import java.util.NoSuchElementException;
-import java.util.Random;
-import java.util.Scanner;
+import java.util.*;
 
 public class Aid {
-    private static final Random r = new Random();
-
-//    private static final List<String> name = List.of("Sanjar", "Amina", "Aleksei", "Loan", "Kairat", "Andrei", "DSS DSS", "Asem", "Tariel'");
-
-//    public static String clientName =name.get(r.nextInt(name.size()));
 
 
-
-
-    static void handle(Socket socket){
+    static void handle(Socket socket, String name){
 
         // логика обработки
-        System.out.printf("Connected client:  %s%n", socket);
+        System.out.printf("Connected client:  %s%n", name);
+
 // создадим объекты через которые будем читать
 // запросы от клиента и отправлять ответы
 
@@ -28,14 +19,14 @@ public class Aid {
 
             while (true) {
                 String message = reader.nextLine();
-                System.out.printf("User write: %s%n", message);
-                sendResponse("Hello " + socket, writer);
-                if(message.equals("stop")) {
-                    break;}
-                for (ServerSomething vr: EchoServer.serverList){
-                        vr.send(message);
+                System.out.println( name + " write "+ message);
+                if (message.equals("stop")) {
+                    break;
                 }
-                if ("Bye".equalsIgnoreCase(message)){
+                for (ServerSomething vr : EchoServer.serverList) {
+                    vr.send(message , name);
+                }
+                if ("Bye".equalsIgnoreCase(message)) {
                     System.out.println("Bye bye!%n");
                     return;
                 }
@@ -54,15 +45,15 @@ public class Aid {
         System.out.printf("Client disconnected:  %s%n", socket);
     }
 
-
     private static PrintWriter getWriter(Socket socket)
-            throws IOException { OutputStream stream = socket.getOutputStream();
+            throws IOException {
+        OutputStream stream = socket.getOutputStream();
         return new PrintWriter(stream);
     }
 
-    private static Scanner getReader(Socket socket)throws IOException {
+    private static Scanner getReader(Socket socket) throws IOException {
         InputStream stream = socket.getInputStream();
-        InputStreamReader input = new InputStreamReader(stream,"UTF-8");
+        InputStreamReader input = new InputStreamReader(stream, "UTF-8");
         return new Scanner(input);
     }
 
@@ -79,6 +70,7 @@ public class Aid {
         writer.write(System.lineSeparator());
         writer.flush();
     }
+
 
 
 

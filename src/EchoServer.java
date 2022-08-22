@@ -9,25 +9,32 @@ import java.util.concurrent.Executors;
 
 public class EchoServer {
 
-    private final int port;
+    private int port;
+
     private EchoServer(int port) {
         this.port = port;
     }
     public static EchoServer bindToPort(int port) {
         return new EchoServer(port);
     }
-
     private final ExecutorService pool =
             Executors.newCachedThreadPool();
 
-    public static LinkedList<ServerSomething> serverList = new LinkedList<>();
+    public static LinkedList <ServerSomething> serverList = new LinkedList<>();
+
+    public final List<String> names = List.of("Sanjar", "Amina", "Aleksei", "Loan", "Kairat", "Andrei", "DSS DSS", "Asem", "Tariel'");
+
+    public static String name;
+    private static final Random r = new Random();
+
+
 
     public void run() {
         try (var server = new ServerSocket(port)) {
             while (!server.isClosed()) {
                 Socket clientSocket = server.accept();
-                pool.submit( () -> Aid.handle(clientSocket));
-
+                this.name = names.get(r.nextInt(names.size()));
+                pool.submit( () -> Aid.handle(clientSocket, name));
 
                 serverList.add(new ServerSomething(clientSocket));
 
@@ -38,8 +45,6 @@ public class EchoServer {
 
         }
     }
-
-
 
 
 }
