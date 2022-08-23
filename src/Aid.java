@@ -4,12 +4,10 @@ import java.util.*;
 
 public class Aid {
 
-
     static void handle(Socket socket, String name){
 
         // логика обработки
         System.out.printf("Connected client:  %s%n", name);
-
 // создадим объекты через которые будем читать
 // запросы от клиента и отправлять ответы
 
@@ -19,12 +17,14 @@ public class Aid {
 
             while (true) {
                 String message = reader.nextLine();
-                System.out.println( name + " write "+ message);
+                System.out.println( name + ": "+ message);
                 if (message.equals("stop")) {
                     break;
                 }
                 for (ServerSomething vr : EchoServer.serverList) {
-                    vr.send(message , name);
+                    vr.send(message, name);
+
+
                 }
                 if ("Bye".equalsIgnoreCase(message)) {
                     System.out.println("Bye bye!%n");
@@ -69,6 +69,7 @@ public class Aid {
         writer.write(response);
         writer.write(System.lineSeparator());
         writer.flush();
+
     }
 
 

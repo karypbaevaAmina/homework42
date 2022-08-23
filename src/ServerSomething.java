@@ -19,10 +19,14 @@ public class ServerSomething extends Thread {
         start();
     }
 
-    void send(String msg, String name ) {
-        try {
-            out.write(name +": " + msg + "\n");
-            out.flush();
-        } catch (IOException ignored) {}
-    }
+    void send(String msg, String name) {
+            try {
+
+                out.write(name + ": " + msg + "\n");
+                out.flush();
+            } catch (IOException ignored) {
+            }
+
+        }
+
 }
